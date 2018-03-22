@@ -1,33 +1,69 @@
 package com.revature.beans;
 
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@Table(name = "USER")
+@Cacheable
 public class User {
 	@Id
-	@SequenceGenerator(name = "TRAINER_ID_SEQUENCE", sequenceName = "TRAINER_ID_SEQUENCE")
-	@GeneratedValue(generator = "TRAINER_ID_SEQUENCE", strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "USER_ID", sequenceName = "USER_ID")
+	@GeneratedValue(generator = "USER_ID", strategy = GenerationType.AUTO)
 	private Integer userId;
 	
+	@NotEmpty
+	@Column(name = "FIRST_NAME", nullable = false)
+	@JsonProperty
 	private String firstName;
-
+	
+	@NotEmpty
+	@Column(name = "MIDDLE_NAME", nullable = false)
+	@JsonProperty
 	private String middleName;
-
+	
+	@NotEmpty
+	@Column(name = "LAST_NAME", nullable = false)
+	@JsonProperty
 	private String lastName;
 
-	private String email;
+	@NotEmpty
+	@Column(name = "TITLE", nullable = false)
+	@JsonProperty
+	private String title;
 
+	@NotEmpty
+	@Email
+	@Column(name = "EMAIL", nullable = false, unique = true, updatable = true)
+	@JsonProperty
+	private String email;
+	
+	@NotEmpty
+	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
 	private String backupPassword;
 
+	@Column(name = "ROLE", nullable = false)
 	private Integer role;
 
 	private String homePhone;
@@ -36,8 +72,10 @@ public class User {
 
 	private String token;
 
-	private String title;
-
+	@ElementCollection(targetClass = Integer.class)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@CollectionTable(name = "BATCH", joinColumns = @JoinColumn(name="t_id"))
+	@Column(name="BATCH_ID")
 	private Set<Integer> batches;
 
 	public User() {
