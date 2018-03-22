@@ -1,22 +1,17 @@
 package com.revature.beans;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -35,9 +30,7 @@ public class User {
 	@Column(name = "FIRST_NAME", nullable = false)
 	@JsonProperty
 	private String firstName;
-	
-	@NotEmpty
-	@Column(name = "MIDDLE_NAME", nullable = false)
+
 	@JsonProperty
 	private String middleName;
 	
@@ -72,20 +65,19 @@ public class User {
 
 	private String token;
 
-	private Set<Integer> batches;
-
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String firstName, String middleName, String lastName, String email, String password,
-			String backupPassword, Integer role, String homePhone, String mobilePhone, String token, Integer userId,
-			String title, Set<Integer> batches) {
+	public User(Integer userId, String firstName, String middleName, String lastName, String title, String email,
+			String password, String backupPassword, Integer role, String homePhone, String mobilePhone, String token) {
 		super();
+		this.userId = userId;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
+		this.title = title;
 		this.email = email;
 		this.password = password;
 		this.backupPassword = backupPassword;
@@ -93,113 +85,14 @@ public class User {
 		this.homePhone = homePhone;
 		this.mobilePhone = mobilePhone;
 		this.token = token;
-		this.userId = userId;
-		this.title = title;
-		this.batches = batches;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getBackupPassword() {
-		return backupPassword;
-	}
-
-	public void setBackupPassword(String backupPassword) {
-		this.backupPassword = backupPassword;
-	}
-
-	public Integer getRole() {
-		return role;
-	}
-
-	public void setRole(Integer role) {
-		this.role = role;
-	}
-
-	public String getHomePhone() {
-		return homePhone;
-	}
-
-	public void setHomePhone(String homePhone) {
-		this.homePhone = homePhone;
-	}
-
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
-
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Set<Integer> getBatches() {
-		return batches;
-	}
-
-	public void setBatches(Set<Integer> batches) {
-		this.batches = batches;
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
+				+ lastName + ", title=" + title + ", email=" + email + ", password=" + password + ", backupPassword="
+				+ backupPassword + ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone
+				+ ", token=" + token + "]";
 	}
 
 	@Override
@@ -207,7 +100,6 @@ public class User {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((backupPassword == null) ? 0 : backupPassword.hashCode());
-		result = prime * result + ((batches == null) ? 0 : batches.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((homePhone == null) ? 0 : homePhone.hashCode());
@@ -235,11 +127,6 @@ public class User {
 			if (other.backupPassword != null)
 				return false;
 		} else if (!backupPassword.equals(other.backupPassword))
-			return false;
-		if (batches == null) {
-			if (other.batches != null)
-				return false;
-		} else if (!batches.equals(other.batches))
 			return false;
 		if (email == null) {
 			if (other.email != null)
@@ -299,12 +186,100 @@ public class User {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "User [firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName + ", email="
-				+ email + ", backupPassword=" + backupPassword + ", role=" + role + ", homePhone=" + homePhone
-				+ ", mobilePhone=" + mobilePhone + ", token=" + token + ", userId=" + userId + ", title=" + title
-				+ ", batches=" + batches + "]";
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getBackupPassword() {
+		return backupPassword;
+	}
+
+	public void setBackupPassword(String backupPassword) {
+		this.backupPassword = backupPassword;
+	}
+
+	public Integer getRole() {
+		return role;
+	}
+
+	public void setRole(Integer role) {
+		this.role = role;
+	}
+
+	public String getHomePhone() {
+		return homePhone;
+	}
+
+	public void setHomePhone(String homePhone) {
+		this.homePhone = homePhone;
+	}
+
+	public String getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
