@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.beans.SimpleTrainer;
 import com.revature.beans.Trainer;
 import com.revature.beans.TrainerRole;
 import com.revature.hydra.trainer.service.TrainerCompositionService;
@@ -128,9 +129,9 @@ public class TrainerController {
 	@RequestMapping(value = "trainers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-	public ResponseEntity<List<Trainer>> getAllTrainers() {
+	public ResponseEntity<List<SimpleTrainer>> getAllTrainers() {
 		log.info("Fetching all trainers");
-		List<Trainer> trainers = trainerCompositionService.findAll();
+		List<SimpleTrainer> trainers = trainerCompositionService.findAll();
 		return new ResponseEntity<>(trainers, HttpStatus.OK);
 	}
 

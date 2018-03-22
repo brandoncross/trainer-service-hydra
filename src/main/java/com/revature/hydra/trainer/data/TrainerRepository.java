@@ -75,6 +75,8 @@ public interface TrainerRepository extends JpaRepository<SimpleTrainer, Integer>
 
 	/**
 	 * Update a single trainer's name, title, tier by finding them by an id
+	 * 
+	 * @param email
 	 *
 	 * @param name,
 	 *            title,tier, userId
@@ -82,9 +84,10 @@ public interface TrainerRepository extends JpaRepository<SimpleTrainer, Integer>
 	 * @return
 	 */
 	@Modifying
-	@Query("update SimpleTrainer t set t.name = ?1, t.title = ?2, t.tier = ?3, t.resume = ?4 where t.trainerId = ?5")
+	@Query("update SimpleTrainer t set t.name = ?1, t.title = ?2, t.tier = ?3, t.resume = ?4, t.email = ?5 where t.trainerId = ?6")
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	void updateTrainerInfoById(String name, String title, TrainerRole tier, String resume, Integer userId);
+	void updateTrainerInfoById(String name, String title, TrainerRole tier, String resume, String email,
+			Integer userId);
 
 	@Query("select distinct t.tier from SimpleTrainer t")
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
