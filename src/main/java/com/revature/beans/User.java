@@ -2,8 +2,20 @@ package com.revature.beans;
 
 import java.util.Set;
 
-public class User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
+@Entity
+public class User {
+	@Id
+	@SequenceGenerator(name = "TRAINER_ID_SEQUENCE", sequenceName = "TRAINER_ID_SEQUENCE")
+	@GeneratedValue(generator = "TRAINER_ID_SEQUENCE", strategy = GenerationType.AUTO)
+	private Integer userId;
+	
 	private String firstName;
 
 	private String middleName;
@@ -23,8 +35,6 @@ public class User {
 	private String mobilePhone;
 
 	private String token;
-
-	private Integer userId;
 
 	private String title;
 
