@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: trainer
+  cloud:
+    config:
+      uri: http://35.183.1.239:8888
