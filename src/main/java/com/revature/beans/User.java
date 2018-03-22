@@ -72,10 +72,6 @@ public class User {
 
 	private String token;
 
-	@ElementCollection(targetClass = Integer.class)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@CollectionTable(name = "BATCH", joinColumns = @JoinColumn(name="t_id"))
-	@Column(name="BATCH_ID")
 	private Set<Integer> batches;
 
 	public User() {
