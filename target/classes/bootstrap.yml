@@ -4,13 +4,3 @@ spring:
   cloud:
     config:
       uri: http://35.183.1.239:8888
-endpoints:
- beans:
-   enabled: true
-   sensitive: false
- shutdown:
-   enabled: true
-   sensitive: false
- actuator:
-   enabled: true
-   sensitive: false

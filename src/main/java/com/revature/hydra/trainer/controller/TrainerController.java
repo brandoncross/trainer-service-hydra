@@ -121,6 +121,19 @@ public class TrainerController {
 	}
 
 	/**
+	 * Returns all trainers titles from the database `
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "trainers/roles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+		log.info("Fetching all trainers roles");
+		List<TrainerRole> trainers = trainerCompositionService.trainerRepository.findAllTrainerRoles();
+		return new ResponseEntity<>(trainers, HttpStatus.OK);
+	}
+
+	/**
 	 * Returns all trainers from the database `
 	 *
 	 * @return
@@ -141,7 +154,7 @@ public class TrainerController {
 	 * @param id
 	 * @return Trainer
 	 */
-	@RequestMapping(value = "/vp/trainer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "trainer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	public ResponseEntity<Trainer> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Fetching trainer base on id.");
@@ -157,7 +170,7 @@ public class TrainerController {
 	 * 
 	 * @return Trainer
 	 */
-	@RequestMapping(value = "/vp/trainer/{firstName}/{lastName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "trainer/{firstName}/{lastName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Trainer> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		String name = firstName + " " + lastName;
