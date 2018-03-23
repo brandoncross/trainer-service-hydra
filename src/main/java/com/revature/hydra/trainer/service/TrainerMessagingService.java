@@ -12,7 +12,7 @@ import com.revature.beans.SimpleSkill;
 import com.revature.beans.SimpleTrainee;
 
 @Service
-public class TrainerCompositionMessagingService {
+public class TrainerMessagingService {
 
 	@Autowired
 	private AmqpTemplate rabbitTemplate;
