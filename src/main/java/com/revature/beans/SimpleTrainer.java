@@ -43,7 +43,7 @@ public class SimpleTrainer implements Serializable {
 	@SequenceGenerator(name = "TRAINER_ID_SEQUENCE", sequenceName = "TRAINER_ID_SEQUENCE")
 	@JsonProperty
 	private Integer trainerId;
-	
+
 	@NotEmpty
 	@Column(name = "NAME", nullable = false)
 	@JsonProperty
@@ -53,7 +53,7 @@ public class SimpleTrainer implements Serializable {
 	@Column(name = "TITLE", nullable = false)
 	@JsonProperty
 	private String title;
-	
+
 	@NotEmpty
 	@Email
 	@Column(name = "EMAIL", nullable = false, unique = true, updatable = true)
@@ -64,20 +64,19 @@ public class SimpleTrainer implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TIER")
 	private TrainerRole tier;
-	
-	@NotEmpty
-	@Column(name = "RESUME", nullable = false)
+
+	@Column(name = "RESUME")
 	@JsonProperty
 	private String resume;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "TRAINER_CERT", joinColumns = @JoinColumn(name = "t_id"), inverseJoinColumns = @JoinColumn(name = "c_id"))
 	private List<Certification> certifications;
-	
+
 	@ElementCollection(targetClass = Integer.class)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@CollectionTable(name = "TRAINER_SKILL", joinColumns = @JoinColumn(name="t_id"))
-	@Column(name="SKILL_ID")
+	@CollectionTable(name = "TRAINER_SKILL", joinColumns = @JoinColumn(name = "t_id"))
+	@Column(name = "SKILL_ID")
 	private List<Integer> skillId;
 
 	public SimpleTrainer() {
@@ -85,7 +84,7 @@ public class SimpleTrainer implements Serializable {
 	}
 
 	public SimpleTrainer(Integer trainerId, String name, String title, String email, TrainerRole tier, String resume,
-			List<Certification> certifications , List<Integer> skillId) {
+			List<Certification> certifications, List<Integer> skillId) {
 		super();
 		this.trainerId = trainerId;
 		this.name = name;
@@ -96,7 +95,6 @@ public class SimpleTrainer implements Serializable {
 		this.certifications = certifications;
 		this.skillId = skillId;
 	}
-
 
 	public SimpleTrainer(Trainer trainer) {
 		super();

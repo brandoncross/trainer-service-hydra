@@ -8,12 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.revature.hydra.trainer.service.TrainerCompositionService;
+import com.revature.hydra.trainer.service.TrainerService;
 
 @Configuration
 public class TrainerProducerConfiguration {
 	@Autowired
-	private TrainerCompositionService mms;
+	private TrainerService mms;
 
 	@Bean
 	public AmqpTemplate rabbitTemplate(ConnectionFactory factory) {
@@ -23,8 +23,8 @@ public class TrainerProducerConfiguration {
 	}
 
 	@Bean
-	public TrainerCompositionService trainerCompositionService() {
-		return new TrainerCompositionService();
+	public TrainerService trainerService() {
+		return new TrainerService();
 	}
 
 	@Bean

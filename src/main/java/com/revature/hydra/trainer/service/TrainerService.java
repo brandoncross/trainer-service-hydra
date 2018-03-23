@@ -15,7 +15,7 @@ import com.revature.hydra.trainer.data.TrainerRepository;
 
 @RestController
 @RequestMapping(value = "/trainer")
-public class TrainerCompositionService {
+public class TrainerService {
 
 	@Autowired
 	AmqpTemplate rabbitTemplate;
@@ -24,22 +24,21 @@ public class TrainerCompositionService {
 	public TrainerRepository trainerRepository;
 
 	@Autowired
-	private TrainerCompositionMessagingService trainerCompositionMessagingService;
+	private TrainerMessagingService trainerMessagingService;
 
-	private static final Logger log = Logger.getLogger(TrainerCompositionService.class);
+	private static final Logger log = Logger.getLogger(TrainerService.class);
 
 	/**
 	 * Save a SimpleTrainer
 	 *
-	 * @param trainer
+	 * @param SimpleTrainer
 	 *
 	 * @return
 	 */
-	public void save(Trainer trainer) {
-		SimpleTrainer simpleTrainer = new SimpleTrainer(trainer);
-		if (trainer.getTrainerId() == 0)
-			simpleTrainer.setTrainerId(null);
-		trainerRepository.save(simpleTrainer);
+	public void save(SimpleTrainer trainer) {
+		// if (trainer.getTrainerId() == 0)
+		// trainer.setTrainerId(null);
+		trainerRepository.save(trainer);
 	}
 
 	/**
