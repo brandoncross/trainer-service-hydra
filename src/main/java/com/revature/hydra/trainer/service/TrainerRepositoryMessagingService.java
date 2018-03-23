@@ -63,7 +63,7 @@ public class TrainerRepositoryMessagingService {
 	 * @return Trainer
 	 */
 	@RabbitListener(queues = "revature.hydra.service.trainer")
-	public Trainer receiveSingleTrainerRequest(String message) {
+	public SimpleTrainer receiveSingleTrainerRequest(String message) {
 		log.info("Single Trainer: message was:\n\t" + message);
 		JsonParser parser = new JsonParser();
 		JsonElement element = parser.parse(message);

@@ -77,8 +77,8 @@ public class TrainerRepositoryRequestDispatcher {
 	 *
 	 * @return result
 	 */
-	public Trainer processSingleTrainerRequest(JsonObject request) {
-		Trainer result = null;
+	public SimpleTrainer processSingleTrainerRequest(JsonObject request) {
+		SimpleTrainer result = null;
 		String methodName = request.get("methodName").getAsString();
 		
 		if(methodName.equals("findByEmail")) {
