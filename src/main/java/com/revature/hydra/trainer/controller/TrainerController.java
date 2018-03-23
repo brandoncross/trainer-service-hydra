@@ -22,7 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.beans.SimpleTrainer;
 import com.revature.beans.Trainer;
 import com.revature.beans.TrainerRole;
+
+import com.revature.beans.User;
 import com.revature.hydra.trainer.service.TrainerService;
+import com.revature.hydra.trainer.service.UserService;
+
+
+
 
 @RestController
 @CrossOrigin
@@ -32,7 +38,18 @@ public class TrainerController {
 
 	@Autowired
 	private TrainerService trainerService;
+	
+	@Autowired
+	private UserService userService;
 
+	
+	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		log.info("Saving trainer: " + user);
+		User persisted = userService.makeUser(user);
+		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
+	}
+	
 	/**
 	 * Create trainer
 	 *
