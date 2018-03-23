@@ -1,7 +1,5 @@
 package com.revature.beans;
 
-import java.util.Set;
-
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -40,11 +37,6 @@ public class User {
 	private String lastName;
 
 	@NotEmpty
-	@Column(name = "TITLE", nullable = false)
-	@JsonProperty
-	private String title;
-
-	@NotEmpty
 	@Email
 	@Column(name = "EMAIL", nullable = false, unique = true, updatable = true)
 	@JsonProperty
@@ -70,14 +62,13 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(Integer userId, String firstName, String middleName, String lastName, String title, String email,
-			String password, String backupPassword, Integer role, String homePhone, String mobilePhone, String token) {
+	public User(Integer userId, String firstName, String middleName, String lastName, String email, String password,
+			String backupPassword, Integer role, String homePhone, String mobilePhone, String token) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
-		this.title = title;
 		this.email = email;
 		this.password = password;
 		this.backupPassword = backupPassword;
@@ -90,9 +81,9 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
-				+ lastName + ", title=" + title + ", email=" + email + ", password=" + password + ", backupPassword="
-				+ backupPassword + ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone
-				+ ", token=" + token + "]";
+				+ lastName + ", email=" + email + ", password=" + password + ", backupPassword=" + backupPassword
+				+ ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone + ", token=" + token
+				+ "]";
 	}
 
 	@Override
@@ -108,7 +99,6 @@ public class User {
 		result = prime * result + ((mobilePhone == null) ? 0 : mobilePhone.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
@@ -168,11 +158,6 @@ public class User {
 				return false;
 		} else if (!role.equals(other.role))
 			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
 		if (token == null) {
 			if (other.token != null)
 				return false;
@@ -216,14 +201,6 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getEmail() {
@@ -281,5 +258,5 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 }
+
