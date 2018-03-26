@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,7 @@ import com.revature.hydra.trainer.service.UserService;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerController {
 
 	private static final Logger log = Logger.getLogger(TrainerController.class);
@@ -59,23 +62,32 @@ public class TrainerController {
 //		return new ResponseEntity<>(trainer, HttpStatus.CREATED);
 //	}
 //	
-	@PostMapping(value = "trainers")
-	public ResponseEntity<BatchTrainer> makeTrainer(@RequestBody TrainerUser tu) {
-		BatchTrainer t = trainerService.newTrainer(tu);
+	@PostMapping
+	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
+		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 //	
-	@PostMapping(value = "trainers/promote")
+	@PostMapping(value = "promote")
 	public ResponseEntity<BatchTrainer> promote(@RequestBody TrainerUser tu) {
 		BatchTrainer t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 	
-	@PutMapping(value="trainers")
+	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
+		log.info(email);
+		log.info("Finding trainer by email of " + email);
+		TrainerUser user = trainerService.findTrainerByEmail(email);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
 //
 //	/**
 //	 * Update trainer

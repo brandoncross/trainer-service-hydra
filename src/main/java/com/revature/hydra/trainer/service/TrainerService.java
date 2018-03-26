@@ -137,7 +137,7 @@ public class TrainerService {
 //		// return result;
 //	}
 
-	public BatchTrainer newTrainer(TrainerUser tu) {
+	public TrainerUser newTrainer(TrainerUser tu) {
 		User u = new User();
 		BeanUtils.copyProperties(tu, u);
 		log.info("Persisting user with the following credentials: " + u.toString());
@@ -151,7 +151,10 @@ public class TrainerService {
 		System.out.println(persisted);
 		System.out.println(bt.toString());
 		BatchTrainer saved = trainerRepository.save(bt);
-		return saved;
+		TrainerUser result = new TrainerUser();
+		BeanUtils.copyProperties(persisted, result);
+		result.setTitle(saved.getTitle());
+		return result;
 	}
 
 	public BatchTrainer promoteToTrainer(TrainerUser tu) {
@@ -173,6 +176,15 @@ public class TrainerService {
 		TrainerUser result = new TrainerUser();
 		BeanUtils.copyProperties(persisted, result);
 		result.setTitle(ret.getTitle());
+		return result;
+	}
+
+	public TrainerUser findTrainerByEmail(String email) {
+		TrainerUser result = new TrainerUser();
+		User u = userRepo.findByEmail(email);
+		BeanUtils.copyProperties(u, result);
+		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
+		result.setTitle(bt.getTitle());
 		return result;
 	}
 
