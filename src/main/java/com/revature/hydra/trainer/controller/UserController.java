@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,12 +55,43 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
+	@DeleteMapping
+	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
+		log.info("Updating user: " + user);
+		user.setRole(0);
+		userService.update(user);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@GetMapping("roles")
+	public ResponseEntity<List<Integer>> getAllUserRoles() {
+		log.info("Fetching all user roles");
+		List<Integer> roles = userService.getAllRoles();
+		return new ResponseEntity<>(roles, HttpStatus.OK);
+
+	}
+
 	@GetMapping
 	public ResponseEntity getAllUsers() {
 		log.info("Viewing all users");
 		List<User> userList = userService.getAllUsers();
 		return new ResponseEntity<>(userList, HttpStatus.OK);
 
+	}
+
+	@GetMapping("id/{id}")
+	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
+		log.info("Fetching user based on id.");
+		User user = userService.findUserById(id);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@GetMapping("name/{firstName}/{lastName}")
+	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,
+			@PathVariable("lastName") String lastName) {
+		String name = firstName + " " + lastName;
+		User user = userService.findByName(name);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 }

@@ -121,7 +121,7 @@ public class TrainerController {
 	}
 
 	/**
-	 * Returns all trainers titles from the database `
+	 * Returns all trainers roles from the database `
 	 *
 	 * @return
 	 */

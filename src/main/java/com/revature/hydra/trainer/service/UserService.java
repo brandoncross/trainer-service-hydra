@@ -31,4 +31,16 @@ public class UserService {
 		return userRepo.findByEmail(email);
 	}
 
+	public List<Integer> getAllRoles() {
+		return userRepo.findAllUserRoles();
+	}
+
+	public User findUserById(Integer id) {
+		return userRepo.findOne(id);
+	}
+
+	public User findByName(String name) {
+		return userRepo.findbyName(name);
+	}
+
 }
