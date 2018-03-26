@@ -72,7 +72,7 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity getAllUsers() {
+	public ResponseEntity<List<User>> getAllUsers() {
 		log.info("Viewing all users");
 		List<User> userList = userService.getAllUsers();
 		return new ResponseEntity<>(userList, HttpStatus.OK);
@@ -89,8 +89,7 @@ public class UserController {
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
-		String name = firstName + " " + lastName;
-		User user = userService.findByName(name);
+		User user = userService.findByName(firstName, lastName);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 

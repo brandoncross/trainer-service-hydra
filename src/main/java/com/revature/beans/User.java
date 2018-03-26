@@ -22,7 +22,7 @@ public class User {
 	@SequenceGenerator(name = "USER_ID", sequenceName = "USER_ID")
 	@GeneratedValue(generator = "USER_ID", strategy = GenerationType.AUTO)
 	private Integer userId;
-	
+
 	@NotEmpty
 	@Column(name = "FIRST_NAME", nullable = false)
 	@JsonProperty
@@ -30,7 +30,7 @@ public class User {
 
 	@JsonProperty
 	private String middleName;
-	
+
 	@NotEmpty
 	@Column(name = "LAST_NAME", nullable = false)
 	@JsonProperty
@@ -41,11 +41,12 @@ public class User {
 	@Column(name = "EMAIL", nullable = false, unique = true, updatable = true)
 	@JsonProperty
 	private String email;
-	
+
 	@NotEmpty
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
+	@Column(name = "BACKUP_PASSWORD", nullable = false)
 	private String backupPassword;
 
 	@Column(name = "ROLE", nullable = false)
@@ -259,4 +260,3 @@ public class User {
 		this.token = token;
 	}
 }
-
