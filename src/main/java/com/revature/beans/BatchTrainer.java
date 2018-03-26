@@ -22,12 +22,10 @@ public class BatchTrainer {
 	@Id
 	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
 	@GeneratedValue(generator = "TRAINER_ID_SEQ", strategy = GenerationType.AUTO)
-	private int trainerId;
+	private Integer trainerId;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	//@Column(name = "USER_ID")
-	@JoinColumn(name = "USER_ID")
-	private User user;
+	@Column(name = "USER_ID", nullable = false)
+	private Integer userId;
 	
 	@NotEmpty
 	private String title;
@@ -37,16 +35,11 @@ public class BatchTrainer {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BatchTrainer(int trainerId, User user, String title) {
+	public BatchTrainer(Integer trainerId, Integer userId, String title) {
 		super();
 		this.trainerId = trainerId;
-		this.user = user;
+		this.userId = userId;
 		this.title = title;
-	}
-
-	@Override
-	public String toString() {
-		return "BatchTrainer [trainerId=" + trainerId + ", user=" + user + ", title=" + title + "]";
 	}
 
 	@Override
@@ -54,8 +47,8 @@ public class BatchTrainer {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + trainerId;
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((trainerId == null) ? 0 : trainerId.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -73,30 +66,38 @@ public class BatchTrainer {
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
-		if (trainerId != other.trainerId)
-			return false;
-		if (user == null) {
-			if (other.user != null)
+		if (trainerId == null) {
+			if (other.trainerId != null)
 				return false;
-		} else if (!user.equals(other.user))
+		} else if (!trainerId.equals(other.trainerId))
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}
 
-	public int getTrainerId() {
+	@Override
+	public String toString() {
+		return "BatchTrainer [trainerId=" + trainerId + ", userId=" + userId + ", title=" + title + "]";
+	}
+
+	public Integer getTrainerId() {
 		return trainerId;
 	}
 
-	public void setTrainerId(int trainerId) {
+	public void setTrainerId(Integer trainerId) {
 		this.trainerId = trainerId;
 	}
 
-	public User getUser() {
-		return user;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getTitle() {
@@ -106,5 +107,7 @@ public class BatchTrainer {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	
 
 }

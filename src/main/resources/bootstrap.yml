@@ -4,3 +4,12 @@ spring:
   cloud:
     config:
       uri: http://35.183.1.239:8888
+      
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: DEBUG
+        hibernate: INFO     
+ 

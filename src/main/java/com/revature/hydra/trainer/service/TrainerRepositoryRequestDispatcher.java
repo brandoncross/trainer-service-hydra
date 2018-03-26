@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
+import com.revature.beans.BatchTrainer;
 import com.revature.beans.SimpleTrainer;
 import com.revature.hydra.trainer.data.TrainerRepository;
 
@@ -29,9 +30,9 @@ public class TrainerRepositoryRequestDispatcher {
 	 *
 	 * @return result
 	 */
-	public SimpleTrainer processSingleSimpleTrainerRequest(JsonObject request) {
+	public BatchTrainer processSingleSimpleTrainerRequest(JsonObject request) {
 
-		SimpleTrainer result = null;
+		BatchTrainer result = null;
 		String methodName = request.get("methodName").getAsString();
 
 		if (methodName.equals("findOne")) {
@@ -53,8 +54,8 @@ public class TrainerRepositoryRequestDispatcher {
 	 *
 	 * @return result
 	 */
-	public List<SimpleTrainer> processListSimpleTrainerRequest(JsonObject request) {
-		List<SimpleTrainer> result = null;
+	public List<BatchTrainer> processListSimpleTrainerRequest(JsonObject request) {
+		List<BatchTrainer> result = null;
 		String methodName = request.get("methodName").getAsString();
 
 		if (methodName.equals("findAll")) {
@@ -63,6 +64,7 @@ public class TrainerRepositoryRequestDispatcher {
 
 		return result;
 	}
+}
 
 	/**
 	 * Parse JsonObject for method to execute Executable methods: findByEmail - find
@@ -72,13 +74,13 @@ public class TrainerRepositoryRequestDispatcher {
 	 *
 	 * @return result
 	 */
-	public SimpleTrainer processSingleTrainerRequest(JsonObject request) {
-		SimpleTrainer result = null;
-		String methodName = request.get("methodName").getAsString();
-
-		if (methodName.equals("findByEmail")) {
-			result = trainerService.findByEmail(request.get("email").getAsString());
-		}
-		return result;
-	}
-}
+//	public SimpleTrainer processSingleTrainerRequest(JsonObject request) {
+//		SimpleTrainer result = null;
+//		String methodName = request.get("methodName").getAsString();
+//
+//		if (methodName.equals("findByEmail")) {
+//			result = trainerService.findByEmail(request.get("email").getAsString());
+//		}
+//		return result;
+//	}
+//}
