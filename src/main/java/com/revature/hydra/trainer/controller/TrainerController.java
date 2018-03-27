@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,10 +59,20 @@ public class TrainerController {
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
+	/**
+	 * Finds a trainer by email. Used for logging in a user with the Salesforce
+	 * controller Note: The final "/" is necessary for a web browser to be able to
+	 * connect to the controller.
+	 *
+	 * @param email
+	 * @return Trainer
+	 */
+
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
+
 	}
 
 	@PutMapping
@@ -93,11 +104,12 @@ public class TrainerController {
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
 	 */
-	// @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	// public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer
-	// id) {
-	// return new ResponseEntity<Void>(HttpStatus.OK);
-	// }
+
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
+		trainerService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
@@ -109,12 +121,36 @@ public class TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
 	 */
+
 	// @GetMapping
 	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
 	// String firstName,
 	// @PathVariable("lastName") String lastName) {
 	// TrainerUser trainer = trainerService.findByName(firstName, lastName);
 	// }
+
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
+
+	@GetMapping("name/{firstName}/{lastName}")
+	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
+			@PathVariable("lastName") String lastName) {
+		TrainerUser trainer = trainerService.findByName(firstName, lastName);
+		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
+	}
 
 	// This has yet to be implemented. Required RabbitMQ.
 	// /**

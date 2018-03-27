@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Manifest-Version: 1.0
 Implementation-Title: trainer-service-hydra
 Implementation-Version: 0.0.1-SNAPSHOT
@@ -9,3 +10,16 @@ Implementation-URL: http://projects.spring.io/spring-boot/trainer-serv
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.
 
+=======
+Manifest-Version: 1.0
+Implementation-Title: trainer-service-hydra
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: John Poblocki
+Implementation-Vendor-Id: revature
+Build-Jdk: 1.8.0_161
+Implementation-URL: http://projects.spring.io/spring-boot/trainer-serv
+ ice-hydra/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
+>>>>>>> f47a423548f023fd4d1c79280a3d393c308de16a
