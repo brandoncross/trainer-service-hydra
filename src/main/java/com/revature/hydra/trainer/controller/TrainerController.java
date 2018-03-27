@@ -2,153 +2,182 @@ package com.revature.hydra.trainer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.beans.Trainer;
-import com.revature.beans.TrainerRole;
-import com.revature.hydra.trainer.service.TrainerCompositionService;
+import com.revature.entities.TrainerUser;
+import com.revature.hydra.trainer.service.TrainerService;
+import com.revature.hydra.trainer.service.UserService;
+
+/**
+ * Controller to retrieve Trainer information.
+ *
+ */
 
 @RestController
 @CrossOrigin
+@RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TrainerController {
 
 	private static final Logger log = Logger.getLogger(TrainerController.class);
 
 	@Autowired
-	private TrainerCompositionService trainerCompositionService;
+	private TrainerService trainerService;
 
-	/**
-	 * Create trainer
-	 *
-	 * @param trainer
-	 *
-	 * @return the response entity
-	 */
-	@RequestMapping(value = "trainers", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	// @PreAuthorize("hasAnyRole('VP')")
-	public ResponseEntity<Trainer> createTrainer(@Valid @RequestBody Trainer trainer) {
-		log.info("Saving trainer: " + trainer);
-		trainerCompositionService.save(trainer);
-		return new ResponseEntity<>(trainer, HttpStatus.CREATED);
+	@Autowired
+	private UserService userService;
+
+	@GetMapping("roles")
+	public ResponseEntity<List<Integer>> getAllUserRoles() {
+		log.info("Fetching all user roles");
+		List<Integer> roles = userService.getAllRoles();
+		return new ResponseEntity<>(roles, HttpStatus.OK);
+
 	}
 
 	/**
-	 * Update trainer
-	 *
-	 * @param trainer
-	 *
-	 * @return the response entity
+	 * Creates a new User.
+	 * 
+	 * @param user
+	 * @return
 	 */
-	@RequestMapping(value = "trainers", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	// @PreAuthorize("hasAnyRole('VP')")
-	public ResponseEntity<Void> updateTrainer(@Valid @RequestBody Trainer trainer) {
-		log.info("Updating trainer: " + trainer);
-		trainerCompositionService.update(trainer);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+	/**
+	 * Creates a new Trainer
+	 * 
+	 * @param tu
+	 * @return
+	 */
+	@PostMapping
+	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
+		TrainerUser t = trainerService.newTrainer(tu);
+		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
 	/**
-	 * Finds a trainer by email. Used for logging in a user with the Salesforce
-	 * controller Note: The final "/" is necessary for a web browser to be able to
-	 * connect to the controller.
-	 *
+	 * Promotes User to Trainer.
+	 * 
+	 * @param tu
+	 * @return
+	 */
+	@PostMapping(value = "promote")
+	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
+		TrainerUser t = trainerService.promoteToTrainer(tu);
+		return new ResponseEntity<>(t, HttpStatus.OK);
+
+	}
+
+	/**
+	 * Update Trainer information.
+	 * 
+	 * @param tu
+	 * @return
+	 */
+	@PutMapping
+	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
+		TrainerUser t = trainerService.update(tu);
+		return new ResponseEntity<>(t, HttpStatus.OK);
+	}
+
+	/**
+	 * Finds Trainer by email.
+	 * 
 	 * @param email
-	 * @return Trainer
-	 */
-	@RequestMapping(value = "trainers/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	// @PreAuthorize("permitAll")
-	public ResponseEntity<Trainer> findTrainerByEmail(@PathVariable String email) {
-		log.trace("Find trainer by email " + email);
-		Trainer trainer = trainerCompositionService.findByEmail(email);
-		return new ResponseEntity<>(trainer, HttpStatus.OK);
-	}
-
-	/**
-	 * Deactivates the trainer, but does not delete them from database
-	 *
-	 * @param trainer
-	 * @return response entity
-	 */
-	// AssignForce deletes based on Id
-	@RequestMapping(value = "trainers", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	// @PreAuthorize("hasAnyRole('VP')")
-	public ResponseEntity<Void> makeInactive(@Valid @RequestBody Trainer trainer) {
-		log.info("Updating trainer: " + trainer);
-		trainer.setTier(TrainerRole.ROLE_INACTIVE);
-		trainerCompositionService.update(trainer);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-
-	/**
-	 * Returns all trainers titles from the database `
-	 *
 	 * @return
 	 */
-	@RequestMapping(value = "trainers/titles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-	public ResponseEntity<List<String>> getAllTrainersTitles() {
-		log.info("Fetching all trainers titles");
-		List<String> trainers = trainerCompositionService.trainerRepository.findAllTrainerTitles();
-		return new ResponseEntity<>(trainers, HttpStatus.OK);
+
+	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
+		log.info(email);
+		log.info("Finding trainer by email of " + email);
+		TrainerUser user = trainerService.findTrainerByEmail(email);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	/**
-	 * Returns all trainers from the database `
-	 *
-	 * @return
-	 */
-	@RequestMapping(value = "trainers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
-	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-	public ResponseEntity<List<Trainer>> getAllTrainers() {
-		log.info("Fetching all trainers");
-		List<Trainer> trainers = trainerCompositionService.findAll();
-		return new ResponseEntity<>(trainers, HttpStatus.OK);
-	}
-
-	// AssignForce Specific Mappings
-	/**
-	 * Returns a trainer by their id.
+	 * Retrieve Trainer by Id
 	 * 
 	 * @param id
-	 * @return Trainer
+	 * @return
 	 */
-	@RequestMapping(value = "/vp/trainer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
-	public ResponseEntity<Trainer> findTrainerById(@PathVariable("id") Integer id) {
+
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Fetching trainer base on id.");
-		return new ResponseEntity<>(trainerCompositionService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
 	}
 
 	/**
-	 * Returns trainer by their name
+	 * Retrieve all titles.
 	 * 
-	 * @param firstName,
-	 *            lastName Assumes that a trainer's name field is stored as
-	 *            "firstName lastName"
-	 * 
-	 * @return Trainer
+	 * @return
 	 */
-	@RequestMapping(value = "/vp/trainer/{firstName}/{lastName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Trainer> findByName(@PathVariable("firstName") String firstName,
-			@PathVariable("lastName") String lastName) {
-		String name = firstName + " " + lastName;
-		return new ResponseEntity<>(trainerCompositionService.findByName(name), HttpStatus.FOUND);
+
+	@GetMapping(value = "/titles")
+	public ResponseEntity<List<String>> getTitles() {
+		List<String> titles = trainerService.allTitles();
+		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
 	}
+
+	/**
+	 * Deactivates the User account associated with the given TrainerId.
+	 */
+
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
+		trainerService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	/**
+	 * Retrieve all trainers.
+	 * 
+	 * @return
+	 */
+	@GetMapping
+	public ResponseEntity<List<TrainerUser>> getAll() {
+		List<TrainerUser> allTrainers = trainerService.getAll();
+		return new ResponseEntity<List<TrainerUser>>(allTrainers, HttpStatus.OK);
+	}
+
+	/**
+	 * Finds a user by unique firstname/lastname combination. This needs further
+	 * thought.
+	 */
+
+	@GetMapping("name/{firstName}/{lastName}")
+	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
+			@PathVariable("lastName") String lastName) {
+		TrainerUser trainer = trainerService.findByName(firstName, lastName);
+		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
+	}
+
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
 
 }
