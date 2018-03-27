@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.beans.User;
+import com.revature.entities.User;
 import com.revature.hydra.trainer.service.UserService;
 
 /**

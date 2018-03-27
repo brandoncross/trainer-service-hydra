@@ -1,4 +1,4 @@
-package com.revature.beans;
+package com.revature.entities;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
