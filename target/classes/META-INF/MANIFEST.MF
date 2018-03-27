@@ -1,11 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: trainer-service-hydra
 Implementation-Version: 0.0.1-SNAPSHOT
-<<<<<<< HEAD
-Built-By: Brandon
-=======
 Built-By: John Poblocki
->>>>>>> 635fd142fb6a8e87c4c40ba809c5c3809c186439
 Implementation-Vendor-Id: revature
 Build-Jdk: 1.8.0_161
 Implementation-URL: http://projects.spring.io/spring-boot/trainer-serv

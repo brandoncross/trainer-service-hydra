@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @SpringBootApplication
 @EnableEurekaClient
-@EntityScan(value = "com.revature.beans")
+@EntityScan(value = "com.revature.entities")
 public class TrainerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TrainerApplication.class, args);
