@@ -10,8 +10,9 @@ Build-Jdk: 1.8.0_161
 Manifest-Version: 1.0
 Implementation-Title: trainer-service-hydra
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: ricky
+Built-By: John Poblocki
 Implementation-Vendor-Id: revature
+<<<<<<< HEAD
 Build-Jdk: 1.8.0_151
 >>>>>>> 216b7b0fad02929379fbb8568a9f09a4fc38df6e
 Implementation-URL: http://projects.spring.io/spring-boot/trainer-serv
@@ -26,6 +27,8 @@ Implementation-Title: trainer-service-hydra
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: John Poblocki
 Implementation-Vendor-Id: revature
+=======
+>>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 Build-Jdk: 1.8.0_161
 Implementation-URL: http://projects.spring.io/spring-boot/trainer-serv
  ice-hydra/
