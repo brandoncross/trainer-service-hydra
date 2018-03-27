@@ -78,8 +78,7 @@ public class TrainerController {
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
-<<<<<<< HEAD
-=======
+
 	/**
 	 * Promotes User to Trainer.
 	 * 
@@ -87,7 +86,7 @@ public class TrainerController {
 	 * @return
 	 */
 
->>>>>>> 6cd0433b5cad3c10970bae6f02f8047d3cae4453
+
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
@@ -151,26 +150,13 @@ public class TrainerController {
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
 	 */
-<<<<<<< HEAD
 
-=======
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
 		trainerService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-<<<<<<< HEAD
 
-	// @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	// public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer
-	// id) {
-	// return new ResponseEntity<Void>(HttpStatus.OK);
-	// }
-
-=======
-	
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	/**
 	 * Retrieve all trainers.
 	 * 
@@ -187,7 +173,7 @@ public class TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
 	 */
-<<<<<<< HEAD
+
 
 	// @GetMapping
 	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
@@ -212,15 +198,14 @@ public class TrainerController {
 	// return new ResponseEntity<>(trainers, HttpStatus.OK);
 	// }
 
-=======
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
+
 	@GetMapping("name/{firstName}/{lastName}")
-	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
-			@PathVariable("lastName") String lastName) {
+	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) 
+	{
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
-<<<<<<< HEAD
+
 
 	// This has yet to be implemented. Required RabbitMQ.
 	// /**
@@ -260,8 +245,7 @@ public class TrainerController {
 	// trainerService.trainerRepository.findAllTrainerRoles();
 	// return new ResponseEntity<>(trainers, HttpStatus.OK);
 	// }
-=======
-	
+
 	
 
 // This has yet to be implemented. Required RabbitMQ.
@@ -277,6 +261,6 @@ public class TrainerController {
 //		List<TrainerRole> trainers = trainerService.trainerRepository.findAllTrainerRoles();
 //		return new ResponseEntity<>(trainers, HttpStatus.OK);
 //	}
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
+
 
 }
