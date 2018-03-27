@@ -55,7 +55,7 @@ public class TrainerController {
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
-<<<<<<< HEAD
+
 
 	/**
 	 * Finds a trainer by email. Used for logging in a user with the Salesforce
@@ -65,21 +65,13 @@ public class TrainerController {
 	 * @param email
 	 * @return Trainer
 	 */
-	@RequestMapping(value = "trainers/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	// @PreAuthorize("permitAll")
-	public ResponseEntity<SimpleTrainer> findTrainerByEmail(@PathVariable String email) {
-		log.trace("Find trainer by email " + email);
-
-		SimpleTrainer trainer = trainerService.findByEmail(email);
-
-		return new ResponseEntity<>(trainer, HttpStatus.OK);
-=======
+	
 	
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
->>>>>>> e20d8132f6df9cf1780bd9131c76c6bfa1f2665a
+
 	}
 	
 	@PutMapping
