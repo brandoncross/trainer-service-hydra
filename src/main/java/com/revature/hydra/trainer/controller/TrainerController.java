@@ -56,30 +56,12 @@ public class TrainerController {
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
-<<<<<<< HEAD
 
-
-	/**
-	 * Finds a trainer by email. Used for logging in a user with the Salesforce
-	 * controller Note: The final "/" is necessary for a web browser to be able to
-	 * connect to the controller.
-	 *
-	 * @param email
-	 * @return Trainer
-	 */
-	
-	
-=======
-
->>>>>>> 99053546004cc48bce1556c5b8f6839c738fb44b
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
-<<<<<<< HEAD
 
-=======
->>>>>>> 99053546004cc48bce1556c5b8f6839c738fb44b
 	}
 	
 	@PutMapping
