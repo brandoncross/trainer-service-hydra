@@ -76,6 +76,7 @@ public class TrainerController {
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
+
 	/**
 	 * Promotes User to Trainer.
 	 * 
@@ -166,12 +167,10 @@ public class TrainerController {
 	 * thought.
 	 */
 	@GetMapping("name/{firstName}/{lastName}")
-	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
-			@PathVariable("lastName") String lastName) {
+	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
-
 
 // This has yet to be implemented. Required RabbitMQ.
 //	/**
