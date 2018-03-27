@@ -10,9 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import com.revature.beans.BatchTrainer;
 import com.revature.beans.TrainerUser;
 import com.revature.beans.User;
+=======
+import com.revature.entities.BatchTrainer;
+import com.revature.entities.TrainerUser;
+import com.revature.entities.User;
+>>>>>>> 635fd142fb6a8e87c4c40ba809c5c3809c186439
 import com.revature.hydra.trainer.data.TrainerRepository;
 import com.revature.hydra.trainer.data.UserRepository;
 import com.revature.util.ClassUtil;
@@ -27,9 +33,15 @@ public class TrainerService {
 	@Autowired
 	public TrainerRepository trainerRepository;
 
+<<<<<<< HEAD
 	@Autowired
 	private TrainerMessagingService trainerMessagingService;
 
+=======
+//	@Autowired
+//	private TrainerMessagingService trainerMessagingService;
+	
+>>>>>>> 635fd142fb6a8e87c4c40ba809c5c3809c186439
 	@Autowired
 	private UserRepository userRepo;
 
@@ -113,9 +125,14 @@ public class TrainerService {
 	 * @return TrainerUser
 	 */
 	public TrainerUser update(TrainerUser tu) {
+<<<<<<< HEAD
 		System.out.println(("The trainer id passed in is " + tu.getTrainerId()));
 		BatchTrainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
 		User u = userService.findUserById((bt.getUserId()));
+=======
+		BatchTrainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
+		User u = userService.findUserById(bt.getUserId());
+>>>>>>> 635fd142fb6a8e87c4c40ba809c5c3809c186439
 		BeanUtils.copyProperties(tu, u, "userId");
 		User persisted = userRepo.save(u);
 		bt.setTitle(tu.getTitle());

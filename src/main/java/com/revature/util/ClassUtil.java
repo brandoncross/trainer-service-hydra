@@ -2,9 +2,9 @@ package com.revature.util;
 
 import org.springframework.beans.BeanUtils;
 
-import com.revature.beans.BatchTrainer;
-import com.revature.beans.TrainerUser;
-import com.revature.beans.User;
+import com.revature.entities.BatchTrainer;
+import com.revature.entities.TrainerUser;
+import com.revature.entities.User;
 
 public class ClassUtil {
 	

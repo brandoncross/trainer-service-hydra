@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.beans.TrainerUser;
+import com.revature.entities.TrainerUser;
 import com.revature.hydra.trainer.service.TrainerService;
 import com.revature.hydra.trainer.service.UserService;
 
@@ -60,7 +60,6 @@ public class TrainerController {
 	 * @param tu
 	 * @return
 	 */
-
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.newTrainer(tu);
@@ -73,7 +72,6 @@ public class TrainerController {
 	 * @param tu
 	 * @return
 	 */
-
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
@@ -87,7 +85,6 @@ public class TrainerController {
 	 * @param tu
 	 * @return
 	 */
-
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.update(tu);
@@ -144,18 +141,11 @@ public class TrainerController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	// @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	// public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer
-	// id) {
-	// return new ResponseEntity<Void>(HttpStatus.OK);
-	// }
-
 	/**
 	 * Retrieve all trainers.
 	 * 
 	 * @return
 	 */
-
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
 		List<TrainerUser> allTrainers = trainerService.getAll();
@@ -167,74 +157,12 @@ public class TrainerController {
 	 * thought.
 	 */
 
-	// @GetMapping
-	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
-	// String firstName,
-	// @PathVariable("lastName") String lastName) {
-	// TrainerUser trainer = trainerService.findByName(firstName, lastName);
-	// }
-
-	// This has yet to be implemented. Required RabbitMQ.
-	// /**
-	// * Returns all trainers titles from the database `
-	// *
-	// * @return
-	// */
-	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
-	// log.info("Fetching all trainers roles");
-	// List<TrainerRole> trainers =
-	// trainerService.trainerRepository.findAllTrainerRoles();
-	// return new ResponseEntity<>(trainers, HttpStatus.OK);
-	// }
-
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
-
-	// This has yet to be implemented. Required RabbitMQ.
-	// /**
-	// * Returns all trainers titles from the database `
-	// *
-	// * @return
-	// */
-	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
-	// log.info("Fetching all trainers roles");
-	// List<TrainerRole> trainers =
-	// trainerService.trainerRepository.findAllTrainerRoles();
-	// return new ResponseEntity<>(trainers, HttpStatus.OK);
-	// }
-
-	// @GetMapping
-	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
-	// String firstName,
-	// @PathVariable("lastName") String lastName) {
-	// TrainerUser trainer = trainerService.findByName(firstName, lastName);
-	// }
-
-	// This has yet to be implemented. Required RabbitMQ.
-	// /**
-	// * Returns all trainers titles from the database `
-	// *
-	// * @return
-	// */
-	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
-	// log.info("Fetching all trainers roles");
-	// List<TrainerRole> trainers =
-	// trainerService.trainerRepository.findAllTrainerRoles();
-	// return new ResponseEntity<>(trainers, HttpStatus.OK);
-	// }
 
 	// This has yet to be implemented. Required RabbitMQ.
 	// /**
