@@ -42,11 +42,10 @@ public class User {
 	@JsonProperty
 	private String email;
 
-	@NotEmpty
-	@Column(name = "PASSWORD", nullable = false)
+	@Column(name = "PASSWORD")
 	private String password;
 
-	@Column(name = "BACKUP_PASSWORD", nullable = false)
+	@Column(name = "BACKUP_PASSWORD")
 	private String backupPassword;
 
 	@Column(name = "ROLE", nullable = false)

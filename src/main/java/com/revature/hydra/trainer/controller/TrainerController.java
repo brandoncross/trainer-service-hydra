@@ -2,8 +2,6 @@ package com.revature.hydra.trainer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.TrainerUser;
-import com.revature.beans.User;
 import com.revature.hydra.trainer.service.TrainerService;
 import com.revature.hydra.trainer.service.UserService;
 
@@ -57,13 +53,6 @@ public class TrainerController {
 	 * @param user
 	 * @return
 	 */
-
-	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		log.info("Saving trainer: " + user);
-		User persisted = userService.makeUser(user);
-		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
-	}
 
 	/**
 	 * Creates a new Trainer
@@ -148,16 +137,12 @@ public class TrainerController {
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
 	 */
-<<<<<<< HEAD
 
-=======
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
 		trainerService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-<<<<<<< HEAD
 
 	// @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	// public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer
@@ -165,9 +150,6 @@ public class TrainerController {
 	// return new ResponseEntity<Void>(HttpStatus.OK);
 	// }
 
-=======
-	
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	/**
 	 * Retrieve all trainers.
 	 * 
@@ -184,7 +166,6 @@ public class TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs further
 	 * thought.
 	 */
-<<<<<<< HEAD
 
 	// @GetMapping
 	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
@@ -209,15 +190,12 @@ public class TrainerController {
 	// return new ResponseEntity<>(trainers, HttpStatus.OK);
 	// }
 
-=======
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
-<<<<<<< HEAD
 
 	// This has yet to be implemented. Required RabbitMQ.
 	// /**
@@ -257,23 +235,21 @@ public class TrainerController {
 	// trainerService.trainerRepository.findAllTrainerRoles();
 	// return new ResponseEntity<>(trainers, HttpStatus.OK);
 	// }
-=======
-	
-	
 
-// This has yet to be implemented. Required RabbitMQ.
-//	/**
-//	 * Returns all trainers titles from the database `
-//	 *
-//	 * @return
-//	 */
-//	@RequestMapping(value = "trainers/roles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
-//	public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
-//		log.info("Fetching all trainers roles");
-//		List<TrainerRole> trainers = trainerService.trainerRepository.findAllTrainerRoles();
-//		return new ResponseEntity<>(trainers, HttpStatus.OK);
-//	}
->>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
 
 }

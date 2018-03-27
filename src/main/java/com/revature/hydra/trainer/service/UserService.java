@@ -35,13 +35,13 @@ public class UserService {
 	}
 
 	public User findUserById(Integer id) {
-		return userRepo.findOne(id);
+		return userRepo.findByUserId(id);
 	}
 
 	public User findByName(String firstName, String lastName) {
 		return userRepo.findUserByFirstNameAndLastName(firstName, lastName);
 	}
-	
+
 	public void delete(Integer id) {
 		User u = userRepo.getOne(id);
 		u.setRole(1);

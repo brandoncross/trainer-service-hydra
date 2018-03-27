@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.BatchTrainer;
-import com.revature.beans.Trainer;
 import com.revature.beans.TrainerUser;
 import com.revature.beans.User;
 import com.revature.hydra.trainer.data.TrainerRepository;
@@ -30,10 +29,10 @@ public class TrainerService {
 
 	@Autowired
 	private TrainerMessagingService trainerMessagingService;
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -66,12 +65,10 @@ public class TrainerService {
 		return result;
 	}
 
-
 	/**
 	 * 
-	 * Creates a new User in the User database and a
-	 * new Trainer in the trainer database associated with
-	 * that User.
+	 * Creates a new User in the User database and a new Trainer in the trainer
+	 * database associated with that User.
 	 * 
 	 * @param trainerUser
 	 * @return TrainerUser
@@ -79,6 +76,7 @@ public class TrainerService {
 	public TrainerUser newTrainer(TrainerUser tu) {
 		User u = new User();
 		BeanUtils.copyProperties(tu, u);
+		u.setRole(tu.getRole());
 		log.info("Persisting user with the following credentials: " + u.toString());
 		BatchTrainer bt = new BatchTrainer();
 		bt.setTitle(tu.getTitle());
@@ -90,11 +88,10 @@ public class TrainerService {
 		TrainerUser result = ClassUtil.merge(persisted, saved);
 		return result;
 	}
-	
+
 	/**
 	 * 
-	 * Creates a new trainer object to associate with a
-	 * pre-existing User object
+	 * Creates a new trainer object to associate with a pre-existing User object
 	 * 
 	 * @param trainerUser
 	 * @return TrainerUser
@@ -110,16 +107,16 @@ public class TrainerService {
 
 	/**
 	 * 
-	 * Updates both the User and Trainer components of a 
-	 * trainer's credentials
+	 * Updates both the User and Trainer components of a trainer's credentials
 	 * 
 	 * @param TrainerUser
 	 * @return TrainerUser
 	 */
 	public TrainerUser update(TrainerUser tu) {
-		User u = new User();
-		BeanUtils.copyProperties(tu, u);
-		BatchTrainer bt = trainerRepository.findByUserId(tu.getUserId());
+		System.out.println(("The trainer id passed in is " + tu.getTrainerId()));
+		BatchTrainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
+		User u = userService.findUserById((bt.getUserId()));
+		BeanUtils.copyProperties(tu, u, "userId");
 		User persisted = userRepo.save(u);
 		bt.setTitle(tu.getTitle());
 		BatchTrainer ret = trainerRepository.save(bt);
@@ -146,14 +143,15 @@ public class TrainerService {
 	}
 
 	/**
-	 * Implementation should be improved. This many individual
-	 * DB calls could take a very long time to resolve.
+	 * Implementation should be improved. This many individual DB calls could take a
+	 * very long time to resolve.
+	 * 
 	 * @return
 	 */
 	public List<TrainerUser> getAll() {
 		List<BatchTrainer> allTrainers = trainerRepository.findAll();
 		List<TrainerUser> result = new ArrayList<TrainerUser>();
-		for(BatchTrainer b:allTrainers) {
+		for (BatchTrainer b : allTrainers) {
 			result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
 		}
 		return result;
@@ -164,6 +162,5 @@ public class TrainerService {
 		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
 		return ClassUtil.merge(u, bt);
 	}
-
 
 }
