@@ -1,70 +1,38 @@
 package com.revature.beans;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "USER")
-@Cacheable
-public class User {
-	@Id
-	@SequenceGenerator(name = "USER_ID", sequenceName = "USER_ID")
-	@GeneratedValue(generator = "USER_ID", strategy = GenerationType.AUTO)
+public class TrainerUser {
+	
 	private Integer userId;
-
-	@NotEmpty
-	@Column(name = "FIRST_NAME", nullable = false)
-	@JsonProperty
 	private String firstName;
-
-	@JsonProperty
 	private String middleName;
-
-	@NotEmpty
-	@Column(name = "LAST_NAME", nullable = false)
-	@JsonProperty
 	private String lastName;
-
-	@NotEmpty
-	@Email
-	@Column(name = "EMAIL", nullable = false, unique = true, updatable = true)
-	@JsonProperty
 	private String email;
-
-	@NotEmpty
-	@Column(name = "PASSWORD", nullable = false)
 	private String password;
-
-	@Column(name = "BACKUP_PASSWORD", nullable = false)
 	private String backupPassword;
-
-	@Column(name = "ROLE", nullable = false)
 	private Integer role;
-
 	private String homePhone;
-
 	private String mobilePhone;
-
 	private String token;
-
-	public User() {
+	private String title;
+	private Integer trainerId;
+	public TrainerUser() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public User(Integer userId, String firstName, String middleName, String lastName, String email, String password,
-			String backupPassword, Integer role, String homePhone, String mobilePhone, String token) {
+	public TrainerUser(Integer userId, String firstName, String middleName, String lastName, String email,
+			String password, String backupPassword, Integer role, String homePhone, String mobilePhone, String token,
+			String title, Integer trainerId) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -77,16 +45,9 @@ public class User {
 		this.homePhone = homePhone;
 		this.mobilePhone = mobilePhone;
 		this.token = token;
+		this.title = title;
+		this.trainerId = trainerId;
 	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
-				+ lastName + ", email=" + email + ", password=" + password + ", backupPassword=" + backupPassword
-				+ ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone + ", token=" + token
-				+ "]";
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -100,11 +61,12 @@ public class User {
 		result = prime * result + ((mobilePhone == null) ? 0 : mobilePhone.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		result = prime * result + ((trainerId == null) ? 0 : trainerId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -113,7 +75,7 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		TrainerUser other = (TrainerUser) obj;
 		if (backupPassword == null) {
 			if (other.backupPassword != null)
 				return false;
@@ -159,10 +121,20 @@ public class User {
 				return false;
 		} else if (!role.equals(other.role))
 			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
 		if (token == null) {
 			if (other.token != null)
 				return false;
 		} else if (!token.equals(other.token))
+			return false;
+		if (trainerId == null) {
+			if (other.trainerId != null)
+				return false;
+		} else if (!trainerId.equals(other.trainerId))
 			return false;
 		if (userId == null) {
 			if (other.userId != null)
@@ -171,92 +143,90 @@ public class User {
 			return false;
 		return true;
 	}
-
+	@Override
+	public String toString() {
+		return "TrainerUser [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName
+				+ ", lastName=" + lastName + ", email=" + email + ", password=" + password + ", backupPassword="
+				+ backupPassword + ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone
+				+ ", token=" + token + ", title=" + title + ", trainerId=" + trainerId + "]";
+	}
 	public Integer getUserId() {
 		return userId;
 	}
-
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-
 	public String getFirstName() {
 		return firstName;
 	}
-
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
 	public String getMiddleName() {
 		return middleName;
 	}
-
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
-
 	public String getLastName() {
 		return lastName;
 	}
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public String getBackupPassword() {
 		return backupPassword;
 	}
-
 	public void setBackupPassword(String backupPassword) {
 		this.backupPassword = backupPassword;
 	}
-
 	public Integer getRole() {
 		return role;
 	}
-
 	public void setRole(Integer role) {
 		this.role = role;
 	}
-
 	public String getHomePhone() {
 		return homePhone;
 	}
-
 	public void setHomePhone(String homePhone) {
 		this.homePhone = homePhone;
 	}
-
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
-
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-
 	public String getToken() {
 		return token;
 	}
-
 	public void setToken(String token) {
 		this.token = token;
 	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public Integer getTrainerId() {
+		return trainerId;
+	}
+	public void setTrainerId(Integer trainerId) {
+		this.trainerId = trainerId;
+	}
+
 }
