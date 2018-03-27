@@ -57,7 +57,6 @@ public class TrainerController {
 	 * @param user
 	 * @return
 	 */
-
 	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("Saving trainer: " + user);
@@ -71,7 +70,6 @@ public class TrainerController {
 	 * @param tu
 	 * @return
 	 */
-
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.newTrainer(tu);

@@ -117,9 +117,9 @@ public class TrainerService {
 	 * @return TrainerUser
 	 */
 	public TrainerUser update(TrainerUser tu) {
-		User u = userService.findUserById(tu.getUserId());
-		BeanUtils.copyProperties(tu, u);
-		BatchTrainer bt = trainerRepository.findByUserId(tu.getUserId());
+		BatchTrainer bt = trainerRepository.findByTrainerId(tu.getTrainerId());
+		User u = userService.findUserById(bt.getUserId());
+		BeanUtils.copyProperties(tu, u, "userId");
 		User persisted = userRepo.save(u);
 		bt.setTitle(tu.getTitle());
 		BatchTrainer ret = trainerRepository.save(bt);

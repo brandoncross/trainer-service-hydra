@@ -35,7 +35,7 @@ public class UserService {
 	}
 
 	public User findUserById(Integer id) {
-		return userRepo.findOne(id);
+		return userRepo.findByUserId(id);
 	}
 
 	public User findByName(String firstName, String lastName) {
