@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
-import com.revature.beans.BatchTrainer;
-import com.revature.beans.SimpleTrainer;
+import com.revature.entities.BatchTrainer;
 import com.revature.hydra.trainer.data.TrainerRepository;
 
 @Service

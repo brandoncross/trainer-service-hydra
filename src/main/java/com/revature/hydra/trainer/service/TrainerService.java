@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.beans.BatchTrainer;
-import com.revature.beans.Trainer;
-import com.revature.beans.TrainerUser;
-import com.revature.beans.User;
+import com.revature.entities.BatchTrainer;
+import com.revature.entities.TrainerUser;
+import com.revature.entities.User;
 import com.revature.hydra.trainer.data.TrainerRepository;
 import com.revature.hydra.trainer.data.UserRepository;
 import com.revature.util.ClassUtil;
@@ -28,8 +27,8 @@ public class TrainerService {
 	@Autowired
 	public TrainerRepository trainerRepository;
 
-	@Autowired
-	private TrainerMessagingService trainerMessagingService;
+//	@Autowired
+//	private TrainerMessagingService trainerMessagingService;
 	
 	@Autowired
 	private UserRepository userRepo;
