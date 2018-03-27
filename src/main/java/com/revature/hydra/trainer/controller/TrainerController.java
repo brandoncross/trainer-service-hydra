@@ -25,6 +25,11 @@ import com.revature.beans.User;
 import com.revature.hydra.trainer.service.TrainerService;
 import com.revature.hydra.trainer.service.UserService;
 
+/**
+ * Controller to retrieve Trainer information.
+ *
+ */
+
 @RestController
 @CrossOrigin
 @RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,12 +51,26 @@ public class TrainerController {
 
 	}
 
+	/**
+	 * Creates a new User.
+	 * 
+	 * @param user
+	 * @return
+	 */
+
 	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("Saving trainer: " + user);
 		User persisted = userService.makeUser(user);
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
+
+	/**
+	 * Creates a new Trainer
+	 * 
+	 * @param tu
+	 * @return
+	 */
 
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
@@ -60,12 +79,10 @@ public class TrainerController {
 	}
 
 	/**
-	 * Finds a trainer by email. Used for logging in a user with the Salesforce
-	 * controller Note: The final "/" is necessary for a web browser to be able to
-	 * connect to the controller.
-	 *
-	 * @param email
-	 * @return Trainer
+	 * Promotes User to Trainer.
+	 * 
+	 * @param tu
+	 * @return
 	 */
 
 	@PostMapping(value = "promote")
@@ -75,11 +92,25 @@ public class TrainerController {
 
 	}
 
+	/**
+	 * Update Trainer information.
+	 * 
+	 * @param tu
+	 * @return
+	 */
+
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
+
+	/**
+	 * Finds Trainer by email.
+	 * 
+	 * @param email
+	 * @return
+	 */
 
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
@@ -89,11 +120,24 @@ public class TrainerController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
+	/**
+	 * Retrieve Trainer by Id
+	 * 
+	 * @param id
+	 * @return
+	 */
+
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Fetching trainer base on id.");
 		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
 	}
+
+	/**
+	 * Retrieve all titles.
+	 * 
+	 * @return
+	 */
 
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
@@ -110,6 +154,18 @@ public class TrainerController {
 		trainerService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
+	// @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	// public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer
+	// id) {
+	// return new ResponseEntity<Void>(HttpStatus.OK);
+	// }
+
+	/**
+	 * Retrieve all trainers.
+	 * 
+	 * @return
+	 */
 
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
@@ -151,6 +207,29 @@ public class TrainerController {
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
+
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
+
+	// @GetMapping
+	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
+	// String firstName,
+	// @PathVariable("lastName") String lastName) {
+	// TrainerUser trainer = trainerService.findByName(firstName, lastName);
+	// }
 
 	// This has yet to be implemented. Required RabbitMQ.
 	// /**
