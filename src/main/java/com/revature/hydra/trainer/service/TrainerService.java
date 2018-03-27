@@ -33,18 +33,22 @@ public class TrainerService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private UserService userService;
 
 	private static final Logger log = Logger.getLogger(TrainerService.class);
 
 	/**
 	 * Delete a single Trainer
 	 *
-	 * @param trainer
+	 * @param id
 	 *
 	 * @return
 	 */
-	public void delete(Trainer trainer) {
-		trainerRepository.delete(trainer.getTrainerId());
+	public void delete(Integer id) {
+		BatchTrainer bt = trainerRepository.findByTrainerId(id);
+		userService.delete(bt.getUserId());
 	}
 
 	/**
@@ -62,39 +66,6 @@ public class TrainerService {
 		return result;
 	}
 
-	/**
-	 * Find a single Trainer by name
-	 *
-	 * @param name
-	 *
-	 * @return Trainer
-	 */
-//	public SimpleTrainer findByName(String name) {
-//		log.info("Name to find: " + name);
-//		SimpleTrainer basis = trainerRepository.findByName(name);
-//		return basis;
-//		// Trainer result = composeTrainer(basis);
-//		// return result;
-//	}
-
-
-	/**
-	 * Find all Trainers
-	 *
-	 * @param
-	 *
-	 * @return List of Trainers
-	 */
-//	public List<SimpleTrainer> findAll() {
-//		List<Trainer> result = new ArrayList<Trainer>();
-//		List<SimpleTrainer> basis = trainerRepository.findAll();
-//		return basis;
-//		// for (SimpleTrainer t : basis) {
-//		// result.add(composeTrainer(t));
-//		// }
-//		//
-//		// return result;
-//	}
 
 	/**
 	 * 
@@ -186,6 +157,12 @@ public class TrainerService {
 			result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
 		}
 		return result;
+	}
+
+	public TrainerUser findByName(String firstName, String lastName) {
+		User u = userService.findByName(firstName, lastName);
+		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
+		return ClassUtil.merge(u, bt);
 	}
 
 

@@ -29,6 +29,10 @@ import com.revature.beans.Trainer;
 import com.revature.beans.TrainerRole;
 import com.revature.hydra.trainer.service.TrainerService;
 
+/**
+ * Controller to retrieve Trainer information.
+ *
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "trainers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,7 +46,11 @@ public class TrainerController {
 	@Autowired
 	private UserService userService;
 
-	
+	/**
+	 * Creates a new User.
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("Saving trainer: " + user);
@@ -50,24 +58,44 @@ public class TrainerController {
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
 	
+	/**
+	 * Creates a new Trainer
+	 * @param tu
+	 * @return
+	 */
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 	
+	/**
+	 * Promotes User to Trainer.
+	 * @param tu
+	 * @return
+	 */
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 	
+	/**
+	 * Update Trainer information.
+	 * @param tu
+	 * @return
+	 */
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 	
+	/**
+	 * Finds Trainer by email.
+	 * @param email
+	 * @return
+	 */
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
 		log.info(email);
@@ -76,12 +104,21 @@ public class TrainerController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
+	/**
+	 * Retrieve Trainer by Id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Fetching trainer base on id.");
 		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
 	}
 	
+	/**
+	 * Retrieve all titles.
+	 * @return
+	 */
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
 		List<String> titles = trainerService.allTitles();
@@ -96,6 +133,10 @@ public class TrainerController {
 //		return new ResponseEntity<Void>(HttpStatus.OK);
 //	}
 	
+	/**
+	 * Retrieve all trainers.
+	 * @return
+	 */
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
 		List<TrainerUser> allTrainers = trainerService.getAll();

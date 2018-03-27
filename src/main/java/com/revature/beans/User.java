@@ -19,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Cacheable
 public class User {
 	@Id
-	@SequenceGenerator(name = "USER_ID", sequenceName = "USER_ID")
-	@GeneratedValue(generator = "USER_ID", strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "USER_ID_SEQ")
+	@GeneratedValue(generator = "USER_ID_SEQ", strategy = GenerationType.AUTO)
 	private Integer userId;
 
 	@NotEmpty

@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.beans.User;
 import com.revature.hydra.trainer.service.UserService;
 
+/**
+ * Controller to retrieve User information.
+ *
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,6 +36,12 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Creates a new User.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("Saving trainer: " + user);
@@ -39,6 +49,12 @@ public class UserController {
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
 
+	/**
+	 * Update User information.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	@PutMapping
 	public ResponseEntity<Void> updateUser(@Valid @RequestBody User user) {
 		log.info("Updating user " + user);
@@ -47,6 +63,12 @@ public class UserController {
 
 	}
 
+	/**
+	 * Finds the user by matching email address.
+	 * 
+	 * @param email
+	 * @return
+	 */
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> findUserByEmail(@PathVariable String email) {
 		log.info(email);
@@ -55,6 +77,12 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
+	/**
+	 * Change User role to inactive.
+	 * 
+	 * @param user
+	 * @return
+	 */
 	@DeleteMapping
 	public ResponseEntity<Void> makeInactive(@RequestBody User user) {
 		log.info("Updating user: " + user);
@@ -63,6 +91,10 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+	/**
+	 * Get all User roles.
+	 * @return
+	 */
 	@GetMapping("roles")
 	public ResponseEntity<List<Integer>> getAllUserRoles() {
 		log.info("Fetching all user roles");
@@ -71,6 +103,10 @@ public class UserController {
 
 	}
 
+	/**
+	 * Retrieves all users from the User table.
+	 * @return
+	 */
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
 		log.info("Viewing all users");
@@ -79,6 +115,11 @@ public class UserController {
 
 	}
 
+	/**
+	 * Finds an User by Id.
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> findUserById(@PathVariable Integer id) {
 		log.info("Fetching user based on id.");
@@ -86,6 +127,13 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
+	/**
+	 * Find User by full name.
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * @return
+	 */
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<User> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
