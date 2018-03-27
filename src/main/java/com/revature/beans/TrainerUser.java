@@ -25,13 +25,14 @@ public class TrainerUser {
 	private String mobilePhone;
 	private String token;
 	private String title;
+	private Integer trainerId;
 	public TrainerUser() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public TrainerUser(Integer userId, String firstName, String middleName, String lastName, String email,
 			String password, String backupPassword, Integer role, String homePhone, String mobilePhone, String token,
-			String title) {
+			String title, Integer trainerId) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -45,13 +46,7 @@ public class TrainerUser {
 		this.mobilePhone = mobilePhone;
 		this.token = token;
 		this.title = title;
-	}
-	@Override
-	public String toString() {
-		return "TrainerUser [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName
-				+ ", lastName=" + lastName + ", email=" + email + ", password=" + password + ", backupPassword="
-				+ backupPassword + ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone
-				+ ", token=" + token + ", title=" + title + "]";
+		this.trainerId = trainerId;
 	}
 	@Override
 	public int hashCode() {
@@ -68,6 +63,7 @@ public class TrainerUser {
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		result = prime * result + ((trainerId == null) ? 0 : trainerId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
@@ -135,12 +131,24 @@ public class TrainerUser {
 				return false;
 		} else if (!token.equals(other.token))
 			return false;
+		if (trainerId == null) {
+			if (other.trainerId != null)
+				return false;
+		} else if (!trainerId.equals(other.trainerId))
+			return false;
 		if (userId == null) {
 			if (other.userId != null)
 				return false;
 		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "TrainerUser [userId=" + userId + ", firstName=" + firstName + ", middleName=" + middleName
+				+ ", lastName=" + lastName + ", email=" + email + ", password=" + password + ", backupPassword="
+				+ backupPassword + ", role=" + role + ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone
+				+ ", token=" + token + ", title=" + title + ", trainerId=" + trainerId + "]";
 	}
 	public Integer getUserId() {
 		return userId;
@@ -214,7 +222,11 @@ public class TrainerUser {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	
+	public Integer getTrainerId() {
+		return trainerId;
+	}
+	public void setTrainerId(Integer trainerId) {
+		this.trainerId = trainerId;
+	}
 
 }
