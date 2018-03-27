@@ -56,7 +56,7 @@ public class TrainerController {
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
