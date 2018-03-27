@@ -24,6 +24,10 @@ import com.revature.beans.User;
 import com.revature.hydra.trainer.service.TrainerService;
 import com.revature.hydra.trainer.service.UserService;
 
+import com.revature.beans.SimpleTrainer;
+import com.revature.beans.Trainer;
+import com.revature.beans.TrainerRole;
+import com.revature.hydra.trainer.service.TrainerService;
 
 @RestController
 @CrossOrigin
@@ -82,7 +86,7 @@ public class TrainerController {
 	public ResponseEntity<List<String>> getTitles() {
 		List<String> titles = trainerService.allTitles();
 		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
-	}
+}
 
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
