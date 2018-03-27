@@ -25,10 +25,10 @@ import com.revature.beans.User;
 import com.revature.hydra.trainer.service.TrainerService;
 import com.revature.hydra.trainer.service.UserService;
 
-import com.revature.beans.SimpleTrainer;
-import com.revature.beans.Trainer;
-import com.revature.beans.TrainerRole;
-import com.revature.hydra.trainer.service.TrainerService;
+/**
+ * Controller to retrieve Trainer information.
+ *
+ */
 
 @RestController
 @CrossOrigin
@@ -39,37 +39,82 @@ public class TrainerController {
 
 	@Autowired
 	private TrainerService trainerService;
-	
+
 	@Autowired
 	private UserService userService;
 
-	
+	@GetMapping("roles")
+	public ResponseEntity<List<Integer>> getAllUserRoles() {
+		log.info("Fetching all user roles");
+		List<Integer> roles = userService.getAllRoles();
+		return new ResponseEntity<>(roles, HttpStatus.OK);
+
+	}
+
+	/**
+	 * Creates a new User.
+	 * 
+	 * @param user
+	 * @return
+	 */
+
 	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		log.info("Saving trainer: " + user);
 		User persisted = userService.makeUser(user);
 		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
 	}
-	
+
+	/**
+	 * Creates a new Trainer
+	 * 
+	 * @param tu
+	 * @return
+	 */
+
 	@PostMapping
 	public ResponseEntity<TrainerUser> makeTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * Promotes User to Trainer.
+	 * 
+	 * @param tu
+	 * @return
+	 */
+
+>>>>>>> 6cd0433b5cad3c10970bae6f02f8047d3cae4453
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 
 	}
-	
+
+	/**
+	 * Update Trainer information.
+	 * 
+	 * @param tu
+	 * @return
+	 */
+
 	@PutMapping
 	public ResponseEntity<TrainerUser> updateTrainer(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.update(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Finds Trainer by email.
+	 * 
+	 * @param email
+	 * @return
+	 */
+
 	@GetMapping(value = "/email/{email:.+}/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerByEmail(@PathVariable String email) {
 		log.info(email);
@@ -77,45 +122,145 @@ public class TrainerController {
 		TrainerUser user = trainerService.findTrainerByEmail(email);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Retrieve Trainer by Id
+	 * 
+	 * @param id
+	 * @return
+	 */
+
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrainerUser> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Fetching trainer base on id.");
 		return new ResponseEntity<TrainerUser>(trainerService.findById(id), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Retrieve all titles.
+	 * 
+	 * @return
+	 */
+
 	@GetMapping(value = "/titles")
 	public ResponseEntity<List<String>> getTitles() {
 		List<String> titles = trainerService.allTitles();
 		return new ResponseEntity<List<String>>(titles, HttpStatus.OK);
-}
+	}
 
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
 	 */
+<<<<<<< HEAD
+
+=======
+>>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
 		trainerService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+<<<<<<< HEAD
+
+	// @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	// public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer
+	// id) {
+	// return new ResponseEntity<Void>(HttpStatus.OK);
+	// }
+
+=======
 	
+>>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
+	/**
+	 * Retrieve all trainers.
+	 * 
+	 * @return
+	 */
+
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
 		List<TrainerUser> allTrainers = trainerService.getAll();
 		return new ResponseEntity<List<TrainerUser>>(allTrainers, HttpStatus.OK);
 	}
-	
 
 	/**
-	 * Finds a user by unique firstname/lastname combination. This needs
-	 * further thought.
+	 * Finds a user by unique firstname/lastname combination. This needs further
+	 * thought.
 	 */
+<<<<<<< HEAD
+
+	// @GetMapping
+	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
+	// String firstName,
+	// @PathVariable("lastName") String lastName) {
+	// TrainerUser trainer = trainerService.findByName(firstName, lastName);
+	// }
+
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
+
+=======
+>>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 	@GetMapping("name/{firstName}/{lastName}")
 	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		TrainerUser trainer = trainerService.findByName(firstName, lastName);
 		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
 	}
+<<<<<<< HEAD
+
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
+
+	// @GetMapping
+	// public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName")
+	// String firstName,
+	// @PathVariable("lastName") String lastName) {
+	// TrainerUser trainer = trainerService.findByName(firstName, lastName);
+	// }
+
+	// This has yet to be implemented. Required RabbitMQ.
+	// /**
+	// * Returns all trainers titles from the database `
+	// *
+	// * @return
+	// */
+	// @RequestMapping(value = "trainers/roles", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
+	// public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
+	// log.info("Fetching all trainers roles");
+	// List<TrainerRole> trainers =
+	// trainerService.trainerRepository.findAllTrainerRoles();
+	// return new ResponseEntity<>(trainers, HttpStatus.OK);
+	// }
+=======
 	
 	
 
@@ -132,5 +277,6 @@ public class TrainerController {
 //		List<TrainerRole> trainers = trainerService.trainerRepository.findAllTrainerRoles();
 //		return new ResponseEntity<>(trainers, HttpStatus.OK);
 //	}
+>>>>>>> 37ad20d0e07ef588afaa25ed199cd71966d04231
 
 }
