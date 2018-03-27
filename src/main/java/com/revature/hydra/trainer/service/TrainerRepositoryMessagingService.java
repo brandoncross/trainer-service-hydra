@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.revature.beans.BatchTrainer;
 import com.revature.beans.SimpleTrainer;
 
 @Service
@@ -28,7 +29,7 @@ public class TrainerRepositoryMessagingService {
 	 * @return SimpleTrainer
 	 */
 	@RabbitListener(queues = "revature.hydra.repos.trainer")
-	public SimpleTrainer receiveSingleSimpleTrainerRequest(String message) {
+	public BatchTrainer receiveSingleSimpleTrainerRequest(String message) {
 		log.info("Single Simple Trainer: message was:\n\t" + message);
 		JsonParser parser = new JsonParser();
 		JsonElement element = parser.parse(message);
@@ -45,7 +46,7 @@ public class TrainerRepositoryMessagingService {
 	 * @return SimpleTrainer
 	 */
 	@RabbitListener(queues = "revature.hydra.repos.trainer.list")
-	public List<SimpleTrainer> receiveListSimpleTrainerRequest(String message) {
+	public List<BatchTrainer> receiveListSimpleTrainerRequest(String message) {
 		log.info("List Simple Trainer: message was:\n\t" + message);
 		JsonParser parser = new JsonParser();
 		JsonElement element = parser.parse(message);
@@ -61,14 +62,14 @@ public class TrainerRepositoryMessagingService {
 	 *
 	 * @return Trainer
 	 */
-	@RabbitListener(queues = "revature.hydra.service.trainer")
-	public SimpleTrainer receiveSingleTrainerRequest(String message) {
-		log.info("Single Trainer: message was:\n\t" + message);
-		JsonParser parser = new JsonParser();
-		JsonElement element = parser.parse(message);
-		JsonObject request = element.getAsJsonObject();
-
-		return trainerRepositoryRequestDispatcher.processSingleTrainerRequest(request);
-	}
+//	@RabbitListener(queues = "revature.hydra.service.trainer")
+//	public SimpleTrainer receiveSingleTrainerRequest(String message) {
+//		log.info("Single Trainer: message was:\n\t" + message);
+//		JsonParser parser = new JsonParser();
+//		JsonElement element = parser.parse(message);
+//		JsonObject request = element.getAsJsonObject();
+//
+//		return trainerRepositoryRequestDispatcher.processSingleTrainerRequest(request);
+//	}
 
 }

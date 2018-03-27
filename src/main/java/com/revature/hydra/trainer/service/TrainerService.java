@@ -5,13 +5,18 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.beans.SimpleTrainer;
+import com.revature.beans.BatchTrainer;
 import com.revature.beans.Trainer;
+import com.revature.beans.TrainerUser;
+import com.revature.beans.User;
 import com.revature.hydra.trainer.data.TrainerRepository;
+import com.revature.hydra.trainer.data.UserRepository;
+import com.revature.util.ClassUtil;
 
 @RestController
 @RequestMapping(value = "/trainer")
@@ -25,36 +30,11 @@ public class TrainerService {
 
 	@Autowired
 	private TrainerMessagingService trainerMessagingService;
+	
+	@Autowired
+	private UserRepository userRepo;
 
 	private static final Logger log = Logger.getLogger(TrainerService.class);
-
-	/**
-	 * Save a SimpleTrainer
-	 *
-	 * @param SimpleTrainer
-	 *
-	 * @return
-	 */
-	public void save(SimpleTrainer trainer) {
-		// if (trainer.getTrainerId() == 0)
-		// trainer.setTrainerId(null);
-		trainerRepository.save(trainer);
-	}
-
-	/**
-	 * Update a Trainer
-	 *
-	 * @param trainer
-	 *
-	 * @return
-	 */
-	public void update(Trainer trainer) {
-		// save(trainer);
-		log.info("Trainer submitted was: " + trainer);
-		trainerRepository.updateTrainerInfoById(trainer.getName(), trainer.getTitle(), trainer.getTier(),
-				trainer.getResume(), trainer.getEmail(), trainer.getTrainerId());
-
-	}
 
 	/**
 	 * Delete a single Trainer
@@ -74,12 +54,12 @@ public class TrainerService {
 	 *
 	 * @return Trainer
 	 */
-	public SimpleTrainer findById(Integer trainerId) {
+	public TrainerUser findById(Integer trainerId) {
 		log.info("Trainer Id: " + trainerId);
-		SimpleTrainer basis = trainerRepository.findByTrainerId(trainerId);
-		return basis;
-		// Trainer result = composeTrainer(basis);
-		// return result;
+		BatchTrainer bt = trainerRepository.findByTrainerId(trainerId);
+		User u = userRepo.findByUserId(bt.getUserId());
+		TrainerUser result = ClassUtil.merge(u, bt);
+		return result;
 	}
 
 	/**
@@ -89,28 +69,14 @@ public class TrainerService {
 	 *
 	 * @return Trainer
 	 */
-	public SimpleTrainer findByName(String name) {
-		log.info("Name to find: " + name);
-		SimpleTrainer basis = trainerRepository.findByName(name);
-		return basis;
-		// Trainer result = composeTrainer(basis);
-		// return result;
-	}
+//	public SimpleTrainer findByName(String name) {
+//		log.info("Name to find: " + name);
+//		SimpleTrainer basis = trainerRepository.findByName(name);
+//		return basis;
+//		// Trainer result = composeTrainer(basis);
+//		// return result;
+//	}
 
-	/**
-	 * Find a single Trainer by email
-	 *
-	 * @param trainerId
-	 *
-	 * @return Trainer
-	 */
-	public SimpleTrainer findByEmail(String email) {
-		log.info("Email to find: " + email);
-		SimpleTrainer basis = trainerRepository.findByEmail(email);
-		return basis;
-		// Trainer result = composeTrainer(basis);
-		// return result;
-	}
 
 	/**
 	 * Find all Trainers
@@ -119,58 +85,108 @@ public class TrainerService {
 	 *
 	 * @return List of Trainers
 	 */
-	public List<SimpleTrainer> findAll() {
-		List<Trainer> result = new ArrayList<Trainer>();
-		List<SimpleTrainer> basis = trainerRepository.findAll();
-		return basis;
-		// for (SimpleTrainer t : basis) {
-		// result.add(composeTrainer(t));
-		// }
-		//
-		// return result;
+//	public List<SimpleTrainer> findAll() {
+//		List<Trainer> result = new ArrayList<Trainer>();
+//		List<SimpleTrainer> basis = trainerRepository.findAll();
+//		return basis;
+//		// for (SimpleTrainer t : basis) {
+//		// result.add(composeTrainer(t));
+//		// }
+//		//
+//		// return result;
+//	}
+
+	/**
+	 * 
+	 * Creates a new User in the User database and a
+	 * new Trainer in the trainer database associated with
+	 * that User.
+	 * 
+	 * @param trainerUser
+	 * @return TrainerUser
+	 */
+	public TrainerUser newTrainer(TrainerUser tu) {
+		User u = new User();
+		BeanUtils.copyProperties(tu, u);
+		log.info("Persisting user with the following credentials: " + u.toString());
+		BatchTrainer bt = new BatchTrainer();
+		bt.setTitle(tu.getTitle());
+		log.info("Setting that user to be a trainer with title: " + bt.getTitle());
+		User persisted = userRepo.save(u);
+		bt.setUserId(persisted.getUserId());
+		bt.setTrainerId(0);
+		BatchTrainer saved = trainerRepository.save(bt);
+		TrainerUser result = ClassUtil.merge(persisted, saved);
+		return result;
+	}
+	
+	/**
+	 * 
+	 * Creates a new trainer object to associate with a
+	 * pre-existing User object
+	 * 
+	 * @param trainerUser
+	 * @return TrainerUser
+	 */
+	public TrainerUser promoteToTrainer(TrainerUser tu) {
+		User u = userRepo.findByUserId(tu.getUserId());
+		BatchTrainer bt = new BatchTrainer();
+		bt.setUserId(u.getUserId());
+		bt.setTitle(tu.getTitle());
+		bt.setTrainerId(0);
+		return ClassUtil.merge(u, bt);
 	}
 
 	/**
-	 * convert a SimpleTrainer in to a Trainer Trainer has a set of batches
-	 * associated with it SimpleTrainer does not
 	 * 
-	 * deprecated trash because useless and terrible
-	 *
-	 * @param src
-	 *
-	 * @return Trainer
+	 * Updates both the User and Trainer components of a 
+	 * trainer's credentials
+	 * 
+	 * @param TrainerUser
+	 * @return TrainerUser
 	 */
-	/*
-	 * private Trainer composeTrainer(SimpleTrainer src) {
-	 * log.info("Simple Trainer was: " + src);
-	 * 
-	 * List<SimpleBatch> batchSet =
-	 * trainerCompositionMessagingService.sendListSimpleBatchRequest(src.
-	 * getTrainerId()); Trainer dest = new Trainer(src); try {
-	 * dest.setBatches(batchSet.stream().map(x -> new
-	 * Batch(x)).collect(Collectors.toSet()));
-	 * 
-	 * // Added to populate batch ... for (Batch b : dest.getBatches()) { for
-	 * (SimpleBatch simpleB : batchSet) { SimpleTrainer batchTrainer =
-	 * trainerRepository.findByTrainerId(simpleB.getTrainerId()); b.setTrainer(new
-	 * Trainer(batchTrainer));
-	 * 
-	 * if (simpleB.getCoTrainerId() != null) { SimpleTrainer batchCoTrainer =
-	 * trainerRepository.findByTrainerId(simpleB.getCoTrainerId());
-	 * b.setCoTrainer(new Trainer(batchCoTrainer)); }
-	 * b.setTrainingType(simpleB.getTrainingType()); // List<SimpleTrainee>
-	 * traineeSet = //
-	 * trainerCompositionMessagingService.sendListSimpleTraineeRequest(b.getBatchId(
-	 * )); // b.setTrainees(traineeSet.stream().map(y -> new //
-	 * Trainee(y)).collect(Collectors.toSet())); } } } catch (NullPointerException
-	 * e) { log.error(e.getMessage()); dest.setBatches(null); }
-	 * 
-	 * if (src.getSkillId() == null) { dest.setSkills(null); } else {
-	 * List<SimpleSkill> skillList = new ArrayList<SimpleSkill>(); for (Integer
-	 * skillId : src.getSkillId()) { SimpleSkill skill =
-	 * trainerCompositionMessagingService.sendSingleSimpleSkillRequest(skillId);
-	 * log.info("skill found was: " + skill + " with skill id of " + skillId); if
-	 * (skill != null) skillList.add(skill); } dest.setSkills(skillList); } return
-	 * dest; }
+	public TrainerUser update(TrainerUser tu) {
+		User u = new User();
+		BeanUtils.copyProperties(tu, u);
+		BatchTrainer bt = trainerRepository.findByUserId(tu.getUserId());
+		User persisted = userRepo.save(u);
+		bt.setTitle(tu.getTitle());
+		BatchTrainer ret = trainerRepository.save(bt);
+		TrainerUser result = ClassUtil.merge(persisted, ret);
+		return result;
+	}
+
+	/**
+	 * Find a single Trainer by email
+	 *
+	 * @param trainerId
+	 *
+	 * @return TrainerUser
 	 */
+	public TrainerUser findTrainerByEmail(String email) {
+		User u = userRepo.findByEmail(email);
+		BatchTrainer bt = trainerRepository.findByUserId(u.getUserId());
+		return ClassUtil.merge(u, bt);
+	}
+
+	public List<String> allTitles() {
+		List<String> titles = trainerRepository.findTitles();
+		return titles;
+	}
+
+	/**
+	 * Implementation should be improved. This many individual
+	 * DB calls could take a very long time to resolve.
+	 * @return
+	 */
+	public List<TrainerUser> getAll() {
+		List<BatchTrainer> allTrainers = trainerRepository.findAll();
+		List<TrainerUser> result = new ArrayList<TrainerUser>();
+		for(BatchTrainer b:allTrainers) {
+			result.add(ClassUtil.merge(userRepo.findByUserId(b.getUserId()), b));
+		}
+		return result;
+	}
+
+
 }
