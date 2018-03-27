@@ -22,7 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.beans.SimpleTrainer;
 import com.revature.beans.Trainer;
 import com.revature.beans.TrainerRole;
-import com.revature.hydra.trainer.service.TrainerCompositionService;
+
+import com.revature.beans.User;
+import com.revature.hydra.trainer.service.TrainerService;
+import com.revature.hydra.trainer.service.UserService;
+
+
+
 
 @RestController
 @CrossOrigin
@@ -31,8 +37,19 @@ public class TrainerController {
 	private static final Logger log = Logger.getLogger(TrainerController.class);
 
 	@Autowired
-	private TrainerCompositionService trainerCompositionService;
+	private TrainerService trainerService;
+	
+	@Autowired
+	private UserService userService;
 
+	
+	@RequestMapping(value = "user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		log.info("Saving trainer: " + user);
+		User persisted = userService.makeUser(user);
+		return new ResponseEntity<>(persisted, HttpStatus.CREATED);
+	}
+	
 	/**
 	 * Create trainer
 	 *
@@ -42,9 +59,9 @@ public class TrainerController {
 	 */
 	@RequestMapping(value = "trainers", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	// @PreAuthorize("hasAnyRole('VP')")
-	public ResponseEntity<Trainer> createTrainer(@Valid @RequestBody Trainer trainer) {
+	public ResponseEntity<SimpleTrainer> createTrainer(@RequestBody SimpleTrainer trainer) {
 		log.info("Saving trainer: " + trainer);
-		trainerCompositionService.save(trainer);
+		trainerService.save(trainer);
 		return new ResponseEntity<>(trainer, HttpStatus.CREATED);
 	}
 
@@ -59,7 +76,7 @@ public class TrainerController {
 	// @PreAuthorize("hasAnyRole('VP')")
 	public ResponseEntity<Void> updateTrainer(@Valid @RequestBody Trainer trainer) {
 		log.info("Updating trainer: " + trainer);
-		trainerCompositionService.update(trainer);
+		trainerService.update(trainer);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -75,7 +92,9 @@ public class TrainerController {
 	// @PreAuthorize("permitAll")
 	public ResponseEntity<SimpleTrainer> findTrainerByEmail(@PathVariable String email) {
 		log.trace("Find trainer by email " + email);
-		SimpleTrainer trainer = trainerCompositionService.findByEmail(email);
+
+		SimpleTrainer trainer = trainerService.findByEmail(email);
+
 		return new ResponseEntity<>(trainer, HttpStatus.OK);
 	}
 
@@ -91,7 +110,7 @@ public class TrainerController {
 	public ResponseEntity<Void> makeInactive(@Valid @RequestBody Trainer trainer) {
 		log.info("Updating trainer: " + trainer);
 		trainer.setTier(TrainerRole.ROLE_INACTIVE);
-		trainerCompositionService.update(trainer);
+		trainerService.update(trainer);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -104,7 +123,7 @@ public class TrainerController {
 	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
 	public ResponseEntity<List<String>> getAllTrainersTitles() {
 		log.info("Fetching all trainers titles");
-		List<String> trainers = trainerCompositionService.trainerRepository.findAllTrainerTitles();
+		List<String> trainers = trainerService.trainerRepository.findAllTrainerTitles();
 		return new ResponseEntity<>(trainers, HttpStatus.OK);
 	}
 
@@ -117,7 +136,7 @@ public class TrainerController {
 	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
 	public ResponseEntity<List<TrainerRole>> getAllTrainersRoles() {
 		log.info("Fetching all trainers roles");
-		List<TrainerRole> trainers = trainerCompositionService.trainerRepository.findAllTrainerRoles();
+		List<TrainerRole> trainers = trainerService.trainerRepository.findAllTrainerRoles();
 		return new ResponseEntity<>(trainers, HttpStatus.OK);
 	}
 
@@ -131,7 +150,7 @@ public class TrainerController {
 	// @PreAuthorize("hasAnyRole('VP', 'TRAINER', 'STAGING', 'QC', 'PANEL')")
 	public ResponseEntity<List<SimpleTrainer>> getAllTrainers() {
 		log.info("Fetching all trainers");
-		List<SimpleTrainer> trainers = trainerCompositionService.findAll();
+		List<SimpleTrainer> trainers = trainerService.findAll();
 		return new ResponseEntity<>(trainers, HttpStatus.OK);
 	}
 
@@ -146,7 +165,7 @@ public class TrainerController {
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	public ResponseEntity<SimpleTrainer> findTrainerById(@PathVariable("id") Integer id) {
 		log.info("Fetching trainer base on id.");
-		return new ResponseEntity<>(trainerCompositionService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<>(trainerService.findById(id), HttpStatus.OK);
 	}
 
 	/**
@@ -162,7 +181,7 @@ public class TrainerController {
 	public ResponseEntity<SimpleTrainer> findByName(@PathVariable("firstName") String firstName,
 			@PathVariable("lastName") String lastName) {
 		String name = firstName + " " + lastName;
-		return new ResponseEntity<>(trainerCompositionService.findByName(name), HttpStatus.FOUND);
+		return new ResponseEntity<>(trainerService.findByName(name), HttpStatus.FOUND);
 	}
 
 }

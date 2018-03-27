@@ -11,14 +11,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.revature.beans.SimpleTrainer;
-import com.revature.beans.Trainer;
 
 @Service
 public class TrainerRepositoryMessagingService {
 
 	@Autowired
 	private TrainerRepositoryRequestDispatcher trainerRepositoryRequestDispatcher;
-	
+
 	private static final Logger log = Logger.getLogger(TrainerRepositoryRequestDispatcher.class);
 
 	/**
@@ -54,7 +53,7 @@ public class TrainerRepositoryMessagingService {
 
 		return trainerRepositoryRequestDispatcher.processListSimpleTrainerRequest(request);
 	}
-	
+
 	/**
 	 * Listener for TrainerRequests for a single Trainer
 	 *
