@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class TrainerController {
 		TrainerUser t = trainerService.newTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
 	}
+<<<<<<< HEAD
 
 
 	/**
@@ -67,11 +69,17 @@ public class TrainerController {
 	 */
 	
 	
+=======
+
+>>>>>>> 99053546004cc48bce1556c5b8f6839c738fb44b
 	@PostMapping(value = "promote")
 	public ResponseEntity<TrainerUser> promote(@RequestBody TrainerUser tu) {
 		TrainerUser t = trainerService.promoteToTrainer(tu);
 		return new ResponseEntity<>(t, HttpStatus.OK);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 99053546004cc48bce1556c5b8f6839c738fb44b
 	}
 	
 	@PutMapping
@@ -103,10 +111,11 @@ public class TrainerController {
 	/**
 	 * Deactivates the User account associated with the given TrainerId.
 	 */
-//	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id")) Integer id) {
-//		return new ResponseEntity<Void>(HttpStatus.OK);
-//	}
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deleteByTrainerId(@PathVariable("id") Integer id) {
+		trainerService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<TrainerUser>> getAll() {
@@ -119,11 +128,12 @@ public class TrainerController {
 	 * Finds a user by unique firstname/lastname combination. This needs
 	 * further thought.
 	 */
-//	@GetMapping
-//	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
-//			@PathVariable("lastName") String lastName) {
-//		TrainerUser trainer = trainerService.findByName(firstName, lastName);
-//	}
+	@GetMapping("name/{firstName}/{lastName}")
+	public ResponseEntity<TrainerUser> findByName(@PathVariable("firstName") String firstName,
+			@PathVariable("lastName") String lastName) {
+		TrainerUser trainer = trainerService.findByName(firstName, lastName);
+		return new ResponseEntity<TrainerUser>(trainer, HttpStatus.OK);
+	}
 	
 	
 

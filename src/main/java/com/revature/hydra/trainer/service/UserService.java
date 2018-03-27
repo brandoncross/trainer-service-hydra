@@ -24,7 +24,6 @@ public class UserService {
 
 	public User update(User user) {
 		return userRepo.save(user);
-
 	}
 
 	public User findUserByEmail(String email) {
@@ -41,6 +40,12 @@ public class UserService {
 
 	public User findByName(String firstName, String lastName) {
 		return userRepo.findUserByFirstNameAndLastName(firstName, lastName);
+	}
+	
+	public void delete(Integer id) {
+		User u = userRepo.getOne(id);
+		u.setRole(1);
+		userRepo.save(u);
 	}
 
 }
